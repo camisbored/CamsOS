@@ -24,6 +24,11 @@ To run, you may want to download an x86-64 emulator like qemu and launch there. 
 included run script, you can use that to launch the program assuming you have qemu 
 configured correctly.
 
+I have tested this on hardware on two machines and it does work- I believe this will
+work on most x86 machines. To do this, you can open a usb drive and the binary file
+included and write the last non zero byte up to the usb drive. This will ruin all 
+other data on drive so make sure it's empty.
+
 This product is in a working state, but is not bug free or complete. I may or may not
 continue to work on this when I have time. Feel free to take it and use it however
 you like. Questions and more information can be sent to-
