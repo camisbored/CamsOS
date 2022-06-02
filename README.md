@@ -3,7 +3,7 @@ A BIOS 16 bit interrupt based x86 Operating System
 ***************************************************************************************
 @Author Camisbored, 6/2/22
 SimpleOS-
-A BIOS 16 bit interrupt based x86 system with read/write and graphics 
+A x86 ASM system with read/write and graphics 
 functionality. This OS contains the following features -
 -Scan Disk for "files" (sectors with data).
 -Write "file" (data to single sector)
