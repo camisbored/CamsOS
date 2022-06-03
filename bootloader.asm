@@ -17,7 +17,7 @@ boot:
     TIMES 3-($-$$) DB 0x90   ; Support 2 or 3 byte encoded JMPs before BPB.
 
     ; Dos 4.0 EBPB 1.44MB floppy
-    OEMname:           db    "mkfs.fat"  ; mkfs.fat is what OEMname mkdosfs uses
+    OEMname:           db    "mkfs.fat"
     bytesPerSector:    dw    512
     sectPerCluster:    db    1
     reservedSectors:   dw    1
