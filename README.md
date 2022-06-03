@@ -1,15 +1,25 @@
 SimpleOS- 6/2/22
 A BIOS 16 bit interrupt based x86 system with read/write and graphics 
 functionality. This OS contains the following features:
+
 Scan Disk for "files" (sectors with data).
+
 Write "file" (data to single sector)
+
 Read "file" (data from selected sector)
+
 Delete "file"
+
 Edit "file" 
+
 Print help menu for navigation help
+
 Write and store raw machine code to sector to be executed.
+
 Dynamically execute stored code
+
 Switch to graphics mode and allow user to draw on screen using keys and colors
+
 Print register values.
 
 There is a build script in here. You will need NASM to assemble. If you plan on editing this, 
