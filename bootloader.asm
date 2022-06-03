@@ -14,9 +14,9 @@ bits 16
 
 boot:
     jmp main
-    TIMES 3-($-$$) DB 0x90   ; Support 2 or 3 byte encoded JMPs before BPB.
+    TIMES 3-($-$$) DB 0x90
 
-    ; Dos 4.0 EBPB 1.44MB floppy
+    ; Define drive size and file system format
     OEMname:           db    "mkfs.fat"
     bytesPerSector:    dw    512
     sectPerCluster:    db    1
@@ -69,13 +69,14 @@ main:
     mov fs, ax              ; ""
     mov gs, ax              ; ""
 
-	;; set up stack
-	mov sp, 0FFFFh			; stack pointer
-	mov ax, 900h
+    ;; set up stack
+    mov sp, 0FFFFh.         ; stack pointer
+    mov ax, 900h
     mov ss, ax              ; stack segment
 
     ;jmp to 100h, where we just loaded the kernel to
     jmp 100h:0000h
-   
+
+;Pad to one full sector and put magic number   
 times 510-($-$$) db 0 
 dw 0AA55h
