@@ -4,9 +4,9 @@ functionality. This OS contains the following features:
 
 -Scan Disk for "files" (sectors with data).
 
--Write "file" (data to single sector)
+-Write and encrypt "file" (data to single sector)
 
--Read "file" (data from selected sector)
+-Read and decrypt "file" (data from selected sector)
 
 -Delete "file"
 
