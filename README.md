@@ -26,6 +26,12 @@ There is a build script in here. You will need NASM to assemble. If you plan on 
 I recommend Visual Studio Code, as you should be able to open this folder up there and be good 
 to go, using the build.bat and run.bat scripts to launch.
 
+This will run on hardware, I tested this on two x86 machines and I believe it should work on most.
+To boot, you must write the fullOS.bin file to a USB using a utility like DD or manually copy the
+bytes over using a HexEditor like HXD. You only need to copy up until the last not null byte to the
+beginning of your flash drive. Note that this will make the files on your usb effectively useless
+so only write to a empty drive.
+
 To run, you may want to download an x86-64 emulator like qemu and launch there. I have 
 included run script, you can use that to launch the program assuming you have qemu 
 configured correctly.
