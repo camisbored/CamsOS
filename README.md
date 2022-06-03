@@ -1,5 +1,5 @@
 SimpleOS- 6/2/22
-A BIOS 16 bit interrupt based x86 system with read/write and graphics 
+A BIOS 16-bit interrupt based x86 system with read/write and graphics 
 functionality. This OS contains the following features:
 
 -Scan Disk for "files" (sectors with data).
