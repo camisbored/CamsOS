@@ -13,12 +13,12 @@ printChar:
 ;;; scans single key and prints to screen;;;
 ;;; takes no input, returns key value in al ;;;
 getKeyAndPrint:
-    mov ah, 0x00
-    int 0x16
-    mov ah, 0x0e
-    int 0x10
-    call newLineReturn
-    ret
+    	mov ah, 0x00
+    	int 0x16
+    	mov ah, 0x0e
+    	int 0x10
+    	call newLineReturn
+	ret
 
 ;;; getInput ;;;
 ;;;gets user input and moves into string variable;;;
@@ -54,44 +54,44 @@ return:
 	ret
 
 moveStringToMemory:
-    xor bx, bx
+	xor bx, bx
 readNextSTMChar:
-    mov al, [string+bx]
-    cmp al, 0x00
-    je exitStringToMemoryLoop
-    add al, [encryptionFactor]
-    mov byte es:[bx], al
-    inc bx
-    jmp readNextSTMChar
+    	mov al, [string+bx]
+    	cmp al, 0x00
+    	je exitStringToMemoryLoop
+	add al, [encryptionFactor]
+    	mov byte es:[bx], al
+    	inc bx
+    	jmp readNextSTMChar
 exitStringToMemoryLoop:
-    ret
+	ret
 
 moveHexToMemory:
 	xor cx, cx
 	xor bx, bx
 readNextHTMChar:
-        mov byte ah, [string+bx]
-        cmp ah, 0x00
-        je exitHexToMemoryLoop
+    	mov byte ah, [string+bx]
+    	cmp ah, 0x00
+    	je exitHexToMemoryLoop
 	inc bx
 	mov byte al, [string+bx]
 	call asciiToHex
 	xchg cx, bx
-        mov byte es:[bx], al
+    	mov byte es:[bx], al
 	xchg cx, bx
-        inc bx
+    	inc bx
 	inc cx
-        jmp readNextHTMChar
+    	jmp readNextHTMChar
 exitHexToMemoryLoop:
 	ret
 
 appendKernelJump:
-    xor bx, bx
+    	xor bx, bx
 checkNext:
-    cmp byte es:[bx], 0x00
-    je lastByteFound
-    inc bx
-    jmp checkNext
+    	cmp byte es:[bx], 0x00
+    	je lastByteFound
+    	inc bx
+    	jmp checkNext
 lastByteFound:
 	mov byte es:[bx], 0xBB
 	mov byte es:[bx+1], 0x00
@@ -109,31 +109,31 @@ moveMemoryToString:
 	xor bx, bx
 readNextMTSChar:
 	mov byte al, es:[bx]
-        cmp al, 0x00
-        je exitMemoryToStringLoop
+    	cmp al, 0x00
+    	je exitMemoryToStringLoop
 	sub al, [encryptionFactor]
-        mov [string+bx], al
-        inc bx
-        jmp readNextMTSChar
+    	mov [string+bx], al
+    	inc bx
+    	jmp readNextMTSChar
 exitMemoryToStringLoop:
 	inc bx
 	mov byte [string+bx], 0x00
 	ret
 
 goToVideoMode:
-        mov ax, 0x0013
-        int 10h
+    	mov ax, 0x0013
+    	int 10h
 	ret
 
 goToTextMode:
-    mov ax, 0x0003
-    int 0x10
-    mov ah, 0x06
-    xor al, al
-    xor cx, cx
-    mov dx, 0x184f
-    mov bx, 0x1E00
-    int 0x10
+    	mov ax, 0x0003
+    	int 0x10
+    	mov ah, 0x06
+    	xor al, al
+    	xor cx, cx
+    	mov dx, 0x184f
+    	mov bx, 0x1E00
+    	int 0x10
 
 printStringEdit:
 	mov ah, 0x0e
@@ -145,9 +145,9 @@ printCharEdit:
 	jmp printCharEdit
 
 getCursorIndex:
-        mov ah, 0x03
-        mov bh, 0x00
-        int 10h
+    	mov ah, 0x03
+   	mov bh, 0x00
+   	int 10h
 	ret
 
 backSpace:
@@ -159,14 +159,14 @@ backSpace:
 
 moveLeft:
 	dec dl
-        mov ah, 0x02
-        int 10h
+    	mov ah, 0x02
+    	int 10h
 	ret
 
 moveRight:
 	inc dl
-        mov ah, 0x02
-        int 10h
+    	mov ah, 0x02
+    	int 10h
 	ret
 
 clearString:
@@ -177,16 +177,16 @@ clearString:
 ;;; prints register values;
 printRegisters:
 	mov byte [string], 'A'
-        mov byte [string+1], 'X'
+    	mov byte [string+1], 'X'
 	mov byte [string+2], ':'
-        mov byte [string+3], ' '
-        mov byte [string+4], '0'
-        mov byte [string+5], 'x'
-        call printAX
-        mov ax, bx
+    	mov byte [string+3], ' '
+    	mov byte [string+4], '0'
+    	mov byte [string+5], 'x'
+    	call printAX
+    	mov ax, bx
 	mov byte [string], 'B'
 	call printAX
-        mov ax, cx
+    	mov ax, cx
 	mov byte [string], 'C'
 	call printAX
 	mov ax, dx
@@ -224,14 +224,14 @@ printRegisters:
 
 printAX:
 	mov dx, ax
-        xchg al, ah
-        call hexToAscii
-        mov byte [string+6], ah
-        mov byte [string+7], al
+    	xchg al, ah
+    	call hexToAscii
+    	mov byte [string+6], ah
+    	mov byte [string+7], al
 	mov ax, dx
-        call hexToAscii
-        mov byte [string+8], ah
-        mov byte [string+9], al
+    	call hexToAscii
+    	mov byte [string+8], ah
+    	mov byte [string+9], al
 	mov byte [string+10], 0x00
 	mov si, string
 	call printString

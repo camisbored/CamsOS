@@ -14,9 +14,9 @@ bits 16
 
 boot:
     jmp main
-    TIMES 3-($-$$) DB 0x90
+    TIMES 3-($-$$) DB 0x90  
 
-    ; Define drive size and file system format
+    ; Define floppy size and format
     OEMname:           db    "mkfs.fat"
     bytesPerSector:    dw    512
     sectPerCluster:    db    1
@@ -57,8 +57,17 @@ main:
     mov bx, 0x0100
     mov es, bx 
     xor bx, bx  
-    mov cx, 0x0002  ;cl contains location of kernel sector
+    mov cx, 0x0004  ;cl contains location of kernel sector
     mov ax, 0x0205  ;al contains how many sectors to load for kernel
+    xor dh, dh
+    int 13h 
+
+    ;; load GUI Launcher ;;
+    mov bx, 0x0300
+    mov es, bx 
+    xor bx, bx  
+    mov cx, 0x0002  ;cl contains location of kernel sector
+    mov ax, 0x0202  ;al contains how many sectors to load for kernel
     xor dh, dh
     int 13h 
     
@@ -69,14 +78,8 @@ main:
     mov fs, ax              ; ""
     mov gs, ax              ; ""
 
-    ;; set up stack
-    mov sp, 0FFFFh.         ; stack pointer
-    mov ax, 900h
-    mov ss, ax              ; stack segment
-
     ;jmp to 100h, where we just loaded the kernel to
     jmp 100h:0000h
-
-;Pad to one full sector and put magic number   
+   
 times 510-($-$$) db 0 
 dw 0AA55h

@@ -48,11 +48,15 @@ mainLoop:
     cmp al, 'i'
     je printReg
 
+    cmp al, 'm'
+    je mouseTest
+
     mov si, notFound
     call printString
     jmp mainLoop
 
 ;;; functions called from main loop ;;;
+
 graphics:
     call goToVideoMode
     mov al, 0x01
@@ -224,6 +228,8 @@ code:
     mov si, codeStr
     call printString
     call moveTo200
+    call clearMemory
+    call clearString
     call getInput
     call moveHexToMemory
     call appendKernelJump
@@ -248,6 +254,15 @@ execute:
 printReg:
     call printRegisters
     jmp mainLoop
+
+mouseTest:
+    mov ax, 300h
+    mov ds, ax              ; data segment
+    mov es, ax              ; extra segment
+    mov fs, ax              ; ""
+    mov gs, ax              ; ""
+    ;jmp to 100h, where we just loaded the kernel to
+    jmp 300h:0000h
 
 ;;; imports ;;;
 %include "IOUtils.inc"
@@ -278,13 +293,15 @@ helpStr: db "----------------------",0x0a,0x0d,\
             "---------------------",0x0a,0x0d,\
             "|i- print out register values|",0x0a,0x0d,\
             "---------------------",0x0a,0x0d,\
+            "|m- mouse test (no way to return)|",0x0a,0x0d,\
+            "---------------------",0x0a,0x0d,\
             "|x- execute code at provided sector|",0x0a,0x0d,\
             "---------------------",0x0a,0x0d,0
 codeStr: db 0x0a, 0x0d, "Enter bytes to save code (B8480ECD10 will print H, ",\
  		    0x0a, 0x0d, "B8410ECD10FEC03C5B75F8EBFE will print alphabet)",0
 
 scanStr: db "The following sectors currently contain data: ",0
-sectorRequest: db "Enter sector to access (valid range 07-FF):",0
+sectorRequest: db "Enter sector to access (valid range 09-7F):",0
 writeStr: db "Enter message for file",0
 savedStr: db "Message saved!", 0
 codeSavedStr: db "Code saved!", 0
@@ -295,7 +312,7 @@ invalidSectorStr: db 0x0a, 0x0d, "!!!ERROR, INVALID SECTOR!!!",0
 
 encryptionFactor db 64
 driveNum: db 0
-requestedSector db 7
+requestedSector db 0x09
 currentSector db 1
 byteVar: db "  "
 ;this is probably a bad practice- by leaving string as last variable

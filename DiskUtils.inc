@@ -30,7 +30,7 @@ writeDisk:
     ret
 
 scanDisk:
-    mov cx, 0x0007
+    mov cx, 0x0009
     xor bx, bx
 scanNextSector:
     cmp cl, 0xFF
@@ -73,12 +73,12 @@ exitClearMemory:
 
 moveTo200:
     mov bx, 0x0200         
-    mov es, bx
-    xor bx, bx
+	mov es, bx
+	xor bx, bx
     ret
 
 moveTo100:
     mov bx, 0x0100         
-    mov es, bx
-    xor bx, bx
+	mov es, bx
+	xor bx, bx
     ret
