@@ -22,6 +22,8 @@ functionality. This OS contains the following features:
 
 -Print register values.
 
+-A mouse demo feature that will turn the mouse on and change screen based on clicks (currently no way to return from this)
+
 There is a build script in here. You will need NASM to assemble. If you plan on editing this, 
 I recommend Visual Studio Code, as you should be able to open this folder up there and be good 
 to go, using the build.bat and run.bat scripts to launch.
