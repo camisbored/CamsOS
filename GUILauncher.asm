@@ -1,3 +1,11 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; GUILauncher.asm			       ;
+; Activates mouse and allows user to move mouse;
+; and click. Clicking box on screen will change;
+; the screen. Currently there is no way to     ;
+; return from this without restarting machine. ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 HW_EQUIP_PS2     equ 4          
 MOUSE_PKT_BYTES  equ 3          
 MOUSE_RESOLUTION equ 3       
