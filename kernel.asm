@@ -261,7 +261,7 @@ mouseTest:
     mov es, ax              ; extra segment
     mov fs, ax              ; ""
     mov gs, ax              ; ""
-    ;jmp to 100h, where we just loaded the kernel to
+    ;jmp to 300h, where the mouse GUI was loaded in bootsector
     jmp 300h:0000h
 
 ;;; imports ;;;
