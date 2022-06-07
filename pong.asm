@@ -1,7 +1,12 @@
+;;;pong.asm;;;
+;;;pong game to be called from kernel;;;
+
+;game start
 pongGame:
    call goToVideoMode
    mov bx, 0x0002
-   
+  
+;;;main loop, poll state and draw
 gameLoop:
     call updateClock
     cmp byte [clockWatch], 0x50
@@ -32,6 +37,7 @@ incDXPong:
     mov byte [playerCenter], ah
     jmp gameLoop
 
+;; move opponent
 updateOpponent:
     cmp byte [oppFlag], 0x01
     je inverseOpp
@@ -59,6 +65,7 @@ clearFlag:
     mov byte [oppFlag], al
     jmp retFromClearFlag
 
+;; move ball
 updateBall:  
     call updateOpponent
     mov al, 0x00
@@ -81,6 +88,7 @@ inverseDirection:
     mov word [ballY], ax
     jmp retFromUpdateBall
 
+; collision detection
 checkCollision:
     mov word ax, [ballX]
     cmp ax, 20
@@ -313,11 +321,12 @@ printCharSameLine:
 	int 0x10
 	jmp printCharSameLine
 
+;;exit
 exitPong:
     call goToTextMode
     jmp mainLoop
     
-
+;data
 playerCenter: dw 100
 oppCenter: dw 100
 ballX: dw 100
