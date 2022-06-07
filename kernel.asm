@@ -2,7 +2,7 @@
 ;kernel.asm                                                       ;
 ;Contains our main logic and interacts with Drive/IO utilities    ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+bits 16
 ;mov driveNum to variable since it is stored in dl on boot
 mov [driveNum], dl
 
@@ -36,9 +36,6 @@ mainLoop:
     cmp al, 'h'
     je help
 
-    cmp al, 'c'
-    je code
-
     cmp al, 'x'
     je execute
 
@@ -50,6 +47,15 @@ mainLoop:
 
     cmp al, 'm'
     je mouseTest
+
+    cmp al, 't'
+    je printTime
+
+    cmp al, 'p'
+    je pong
+
+    cmp al, 'c'
+    je calc
 
     mov si, notFound
     call printString
@@ -118,11 +124,7 @@ scan:
     jmp mainLoop
 
 read:    
-    mov si, sectorRequest
-    call printString
-    call readSingleByte
-    mov [requestedSector], al
-    call newLineReturn
+    call askSectorToAccess
     call moveTo200
     call readDisk
     call moveMemoryToString
@@ -134,16 +136,54 @@ read:
     jmp mainLoop
 
 write:
-    mov si, sectorRequest
+    call askSectorToAccess
+    call moveTo200
+    mov si, textOrHex
     call printString
-    call readSingleByte
-    mov [requestedSector], al
-    call newLineReturn
+    call getKeyAndPrint
+    cmp al, 't'
+    je writeText
+    cmp al, 'c'
+    je writeCode
+    mov si, tOrCNotFound
+    call printString
+    jmp mainLoop
+
+writeText:
+    mov si, writeStr
+    call printString
+    call getInput
+    call moveStringToMemory
+    call addTimeStampToMemory
+    call writeDisk
+    mov si, savedStr
+    call printString
+    call clearMemory
+    call moveTo100
+    jmp mainLoop
+
+writeCode:
+    mov si, codeStr
+    call printString
+    call clearMemory
+    call clearString
+    call getInput
+    call moveHexToMemory
+    call appendKernelJump
+    call writeDisk
+    mov si, codeSavedStr
+    call printString
+    call clearMemory
+    call moveTo100
+    jmp mainLoop
+
+    call askSectorToAccess
     call moveTo200
     mov si, writeStr
     call printString
     call getInput
     call moveStringToMemory
+    call addTimeStampToMemory
     call writeDisk
     mov si, savedStr
     call printString
@@ -152,11 +192,7 @@ write:
     jmp mainLoop
 
 delete:
-    mov si, sectorRequest
-    call printString
-    call readSingleByte
-    mov [requestedSector], al
-    call newLineReturn
+    call askSectorToAccess
     call moveTo200
     call clearMemory
     call writeDisk
@@ -166,11 +202,7 @@ delete:
     jmp mainLoop
 
 edit:
-    mov si, sectorRequest
-    call printString
-    call readSingleByte
-    mov [requestedSector], al
-    call newLineReturn
+    call askSectorToAccess
     call moveTo200
     call readDisk
     call moveMemoryToString
@@ -220,26 +252,6 @@ help:
     call printString
     jmp mainLoop
 
-code:
-    mov si, sectorRequest
-    call printString
-    call readSingleByte
-    mov [requestedSector], al
-    mov si, codeStr
-    call printString
-    call moveTo200
-    call clearMemory
-    call clearString
-    call getInput
-    call moveHexToMemory
-    call appendKernelJump
-    call writeDisk
-    mov si, codeSavedStr
-    call printString
-    call clearMemory
-    call moveTo100
-    jmp mainLoop
-
 execute:
     mov si, sectorRequest
     call printString
@@ -250,6 +262,17 @@ execute:
     call moveTo200
     call readDisk
     jmp 200h:0000h
+
+pong:
+    call pongGame
+    jmp mainLoop
+
+calc:
+    mov si, calcString
+    call printString
+    call getInput
+    call performCalculation
+    jmp mainLoop
 
 printReg:
     call printRegisters
@@ -264,36 +287,43 @@ mouseTest:
     ;jmp to 300h, where the mouse GUI was loaded in bootsector
     jmp 300h:0000h
 
+printTime:
+    call printTimeString
+    jmp mainLoop
+
 ;;; imports ;;;
 %include "IOUtils.inc"
 %include "HexAsciiUtils.inc"
 %include "DiskUtils.inc"
+%include "pong.asm"
 
 ;;; data ;;;
 welcomeMessage: db "***Welcome to Cam's OS***",0
 mainMessage: db "Choose from the following:",0x0a,0x0d,\
-                "[s]can, [r]ead, [w]rite, [d]elete, [h]elp, [c]ode, e[x]ecute, [e]dit, [g]fx",0
+                "[s]can, [r]ead, [w]rite, [d]elete, [h]elp, [t]ime, e[x]ecute, [e]dit, [g]fx",0
 
 helpStr: db "----------------------",0x0a,0x0d,\
             "|     Help Menu      |",0x0a,0x0d,\
+            "---------------------",0x0a,0x0d,\
+            "|e- edit file at given sector|",0x0a,0x0d,\
             "---------------------",0x0a,0x0d,\
             "|s- scan drive for sectors with data (IE- display list of files)|",0x0a,0x0d,\
             "---------------------",0x0a,0x0d,\
             "|r- read and print file located at provided sector|",0x0a,0x0d,\
             "---------------------",0x0a,0x0d,\
-            "|w- writes and encrypts message provided to given sector|",0x0a,0x0d,\
+            "|w- writes/encrypts/timestamps message or stores executable code|",0x0a,0x0d,\
             "---------------------",0x0a,0x0d,\
             "|d- deletes data at given sector|",0x0a,0x0d,\
             "---------------------",0x0a,0x0d,\
-            "|c- stores executable code at given sector that can be executed|",0x0a,0x0d,\
+            "|p- play pong with arrow keys, leave with ESC|",0x0a,0x0d,\
             "---------------------",0x0a,0x0d,\
             "|g- draw using arrows, change color with c, black with b, leave with ESC|",0x0a,0x0d,\
-            "---------------------",0x0a,0x0d,\
-            "|e- edit file at given sector|",0x0a,0x0d,\
             "---------------------",0x0a,0x0d,\
             "|i- print out register values|",0x0a,0x0d,\
             "---------------------",0x0a,0x0d,\
             "|m- mouse test (no way to return)|",0x0a,0x0d,\
+            "---------------------",0x0a,0x0d,\
+            "|c- very basic calculator|",0x0a,0x0d,\
             "---------------------",0x0a,0x0d,\
             "|x- execute code at provided sector|",0x0a,0x0d,\
             "---------------------",0x0a,0x0d,0
@@ -301,18 +331,23 @@ codeStr: db 0x0a, 0x0d, "Enter bytes to save code (B8480ECD10 will print H, ",\
  		    0x0a, 0x0d, "B8410ECD10FEC03C5B75F8EBFE will print alphabet)",0
 
 scanStr: db "The following sectors currently contain data: ",0
-sectorRequest: db "Enter sector to access (valid range 09-7F):",0
+sectorRequest: db "Enter sector to access (valid range 0C-7F):",0
 writeStr: db "Enter message for file",0
+textOrHex: db "Are you writing [t]ext or [c]ode?",0
+tOrCNotFound: db "Invalid Entry- only [t] or [c] are valid. Try again.",0
 savedStr: db "Message saved!", 0
 codeSavedStr: db "Code saved!", 0
 clearedStr: db "Data has been deleted",0
-notFound: db "Command not found! Type [h] or try again",0    
+notFound: db "Command not found! Type [h] or try again",0 
+calcString: db "Enter simple single digit math (4+4, 4-2)",0  
+syntaxErrorStr: db "!!!SYNTAX ERROR!!! single digit and +/- only",0  
 executeStr: db 0x0a, 0x0d, "Running code...",0
 invalidSectorStr: db 0x0a, 0x0d, "!!!ERROR, INVALID SECTOR!!!",0
 
 encryptionFactor db 64
 driveNum: db 0
-requestedSector db 0x09
+requestedSector db 0x0C
+SYSTEM_SECTOR_SIZE:	db 0x0C
 currentSector db 1
 byteVar: db "  "
 ;this is probably a bad practice- by leaving string as last variable

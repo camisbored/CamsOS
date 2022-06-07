@@ -58,7 +58,7 @@ main:
     mov es, bx 
     xor bx, bx  
     mov cx, 0x0004  ;cl contains location of kernel sector
-    mov ax, 0x0205  ;al contains how many sectors to load for kernel
+    mov ax, 0x0209  ;al contains how many sectors to load for kernel
     xor dh, dh
     int 13h 
 

@@ -53,16 +53,90 @@ newLineReturn:
 return:
 	ret
 
+askSectorToAccess:
+    mov si, sectorRequest
+    call printString
+    call readSingleByte
+	cmp byte al, [SYSTEM_SECTOR_SIZE]
+    jl sectorError
+    mov [requestedSector], al
+    call newLineReturn
+	ret
+
+sectorError:
+    mov si, invalidSectorStr
+    call printString
+    jmp mainLoop
+
+addTimeStampToMemory:
+	xor bx, bx
+	mov ah, 0x04
+	int 0x1a
+	mov byte es:[bx+505], ch
+	mov byte es:[bx+506], cl
+	mov byte es:[bx+507], dh
+	mov byte es:[bx+508], dl
+	mov ah, 0x02
+	int 0x1a
+	mov byte es:[bx+509], ch
+	mov byte es:[bx+510], cl
+	mov byte es:[bx+511], dh
+	ret
+
+printTimeString:
+    mov ah, 0x04
+	int 0x1a
+    mov al, dh
+    call hexToAscii
+    mov byte es:[string], ah
+    mov byte es:[string+1], al
+    mov byte es:[string+2], '/'
+    mov al, dl
+    call hexToAscii
+    mov byte es:[string+3], ah
+    mov byte es:[string+4], al
+    mov byte es:[string+5], '/'
+    mov al, ch
+    call hexToAscii
+    mov byte es:[string+6], ah
+    mov byte es:[string+7], al
+    mov al, cl
+    call hexToAscii
+    mov byte es:[string+8], ah
+    mov byte es:[string+9], al
+    mov byte es:[string+10], ' '
+	mov ah, 0x02
+	int 0x1a
+    mov al, ch
+    call hexToAscii
+    mov byte es:[string+11], ah
+    mov byte es:[string+12], al
+    mov byte es:[string+13], ':'
+    mov al, cl
+    call hexToAscii
+    mov byte es:[string+14], ah
+    mov byte es:[string+15], al
+    mov byte es:[string+16], ':'
+    mov al, dh
+    call hexToAscii
+    mov byte es:[string+17], ah
+    mov byte es:[string+18], al
+    mov byte es:[string+19], 0x00
+    mov si, string
+    call printString
+    jmp mainLoop
+	ret
+
 moveStringToMemory:
 	xor bx, bx
 readNextSTMChar:
-    	mov al, [string+bx]
-    	cmp al, 0x00
-    	je exitStringToMemoryLoop
+	mov al, [string+bx]
+	cmp al, 0x00
+	je exitStringToMemoryLoop
 	add al, [encryptionFactor]
-    	mov byte es:[bx], al
-    	inc bx
-    	jmp readNextSTMChar
+	mov byte es:[bx], al
+	inc bx
+	jmp readNextSTMChar
 exitStringToMemoryLoop:
 	ret
 
@@ -70,18 +144,18 @@ moveHexToMemory:
 	xor cx, cx
 	xor bx, bx
 readNextHTMChar:
-    	mov byte ah, [string+bx]
-    	cmp ah, 0x00
-    	je exitHexToMemoryLoop
+	mov byte ah, [string+bx]
+	cmp ah, 0x00
+	je exitHexToMemoryLoop
 	inc bx
 	mov byte al, [string+bx]
 	call asciiToHex
 	xchg cx, bx
-    	mov byte es:[bx], al
+	mov byte es:[bx], al
 	xchg cx, bx
-    	inc bx
+	inc bx
 	inc cx
-    	jmp readNextHTMChar
+	jmp readNextHTMChar
 exitHexToMemoryLoop:
 	ret
 
@@ -134,6 +208,7 @@ goToTextMode:
     	mov dx, 0x184f
     	mov bx, 0x1E00
     	int 0x10
+		ret
 
 printStringEdit:
 	mov ah, 0x0e
@@ -173,20 +248,57 @@ clearString:
 	mov byte [string], 0x00
 	ret
 
+performCalculation:
+	xor cx, cx
+	xor ax, ax
+	mov byte ch, [string]
+	mov byte cl, [string+2]
+	mov al, ch
+	call asciiToHex
+	xchg al, cl
+	call asciiToHex
+	cmp byte [string+1], '+'
+	je addition
+	cmp byte [string+1], '-'
+	je subtraction
+	jmp syntaxError
+returnFromMath:
+	call hexToAscii
+	mov byte [string], ah
+	mov byte [string+1], al
+	mov byte [string+2], 0x00
+	mov si, string
+	call printString
+	ret
+
+addition:
+	add al, cl
+	jmp returnFromMath
+
+subtraction:
+	xchg al, cl
+	sub al, cl
+	jmp returnFromMath
+
+syntaxError:
+	mov si, syntaxErrorStr
+	call printString
+	jmp mainLoop
+
 ;;;printReg;;;
 ;;; prints register values;
 printRegisters:
 	mov byte [string], 'A'
-    	mov byte [string+1], 'X'
+    mov byte [string+1], 'X'
 	mov byte [string+2], ':'
-    	mov byte [string+3], ' '
-    	mov byte [string+4], '0'
-    	mov byte [string+5], 'x'
-    	call printAX
-    	mov ax, bx
+	mov byte [string+3], ' '
+	mov byte [string+4], '0'
+    mov byte [string+5], 'x'
+    call printAX
+    mov ax, bx
 	mov byte [string], 'B'
 	call printAX
-    	mov ax, cx
+    mov ax, cx
 	mov byte [string], 'C'
 	call printAX
 	mov ax, dx
@@ -218,20 +330,18 @@ printRegisters:
 	mov ax, ss
 	mov byte [string], 'S'
 	call printAX
-
-	call clearString
 	ret
 
 printAX:
 	mov dx, ax
-    	xchg al, ah
-    	call hexToAscii
-    	mov byte [string+6], ah
-    	mov byte [string+7], al
+	xchg al, ah
+	call hexToAscii
+	mov byte [string+6], ah
+	mov byte [string+7], al
 	mov ax, dx
-    	call hexToAscii
-    	mov byte [string+8], ah
-    	mov byte [string+9], al
+	call hexToAscii
+	mov byte [string+8], ah
+	mov byte [string+9], al
 	mov byte [string+10], 0x00
 	mov si, string
 	call printString

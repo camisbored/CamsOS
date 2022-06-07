@@ -30,7 +30,8 @@ writeDisk:
     ret
 
 scanDisk:
-    mov cx, 0x0009
+    xor ch, ch
+    mov cl, [SYSTEM_SECTOR_SIZE]
     xor bx, bx
 scanNextSector:
     cmp cl, 0xFF
@@ -55,6 +56,7 @@ appendSectorToString:
     inc bx
     jmp retFromAppendSector
 exitScan:
+    mov byte [string+bx], 0x00
     ret
 
 

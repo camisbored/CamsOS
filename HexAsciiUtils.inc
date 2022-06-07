@@ -60,11 +60,4 @@ readSingleByte:
     mov ah, [byteVar]
     mov al, [byteVar+1]
     call asciiToHex
-    cmp al, 0x09
-    jl sectorError
     ret
-
-sectorError:
-    mov si, invalidSectorStr
-    call printString
-    jmp mainLoop
