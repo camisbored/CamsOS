@@ -20,7 +20,7 @@ boot:
     OEMname:           db    "mkfs.fat"
     bytesPerSector:    dw    512
     sectPerCluster:    db    1
-    reservedSectors:   dw    1
+    reservedSectors:   dw    257
     numFAT:            db    2
     numRootDirEntries: dw    224
     numSectors:        dw    2880
