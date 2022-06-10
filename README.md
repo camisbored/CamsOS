@@ -46,5 +46,5 @@ configured correctly.
 
 This product is in a working state, but is not bug free or complete. I may or may not
 continue to work on this when I have time. Feel free to take it and use it however
-you like. Questions and more information can be sent to-
+you like. Inquiries and requests can be sent to-
 camerongrande95@gmail.com
