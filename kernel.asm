@@ -57,6 +57,9 @@ mainLoop:
     cmp al, 'c'
     je calc
 
+    cmp al, 'a'
+    je image
+
     mov si, notFound
     call printString
     jmp mainLoop
@@ -291,6 +294,17 @@ printTime:
     call printTimeString
     jmp mainLoop
 
+image:
+    call goToVideoMode
+    mov byte dl, [driveNum]
+    mov ax, 500h
+    mov ds, ax              ; data segment
+    mov es, ax              ; extra segment
+    mov fs, ax              ; ""
+    mov gs, ax              ; ""
+    ;jmp to 500h, where the george pic was loaded in bootsector
+    jmp 500h:0000h
+
 ;;; imports ;;;
 %include "IOUtils.inc"
 %include "HexAsciiUtils.inc"
@@ -313,7 +327,7 @@ helpStr: db "----------------------",0x0a,0x0d,\
             "---------------------",0x0a,0x0d,\
             "|w- writes/encrypts/timestamps message or stores executable code|",0x0a,0x0d,\
             "---------------------",0x0a,0x0d,\
-            "|d- deletes data at given sector|",0x0a,0x0d,\
+            "|a- displays a picture of George the Cat! (ESC to return)|",0x0a,0x0d,\
             "---------------------",0x0a,0x0d,\
             "|p- play pong with arrow keys, leave with ESC|",0x0a,0x0d,\
             "---------------------",0x0a,0x0d,\
@@ -331,7 +345,7 @@ codeStr: db 0x0a, 0x0d, "Enter bytes to save code (B8480ECD10 will print H, ",\
  		    0x0a, 0x0d, "B8410ECD10FEC03C5B75F8EBFE will print alphabet)",0
 
 scanStr: db "The following sectors currently contain data: ",0
-sectorRequest: db "Enter sector to access (valid range 0C-7F):",0
+sectorRequest: db "Enter sector to access (valid range 10-7F):",0
 writeStr: db "Enter message for file",0
 textOrHex: db "Are you writing [t]ext or [c]ode?",0
 tOrCNotFound: db "Invalid Entry- only [t] or [c] are valid. Try again.",0
@@ -346,8 +360,8 @@ invalidSectorStr: db 0x0a, 0x0d, "!!!ERROR, INVALID SECTOR!!!",0
 
 encryptionFactor db 64
 driveNum: db 0
-requestedSector db 0x0C
-SYSTEM_SECTOR_SIZE:	db 0x0C
+requestedSector db 0x10
+SYSTEM_SECTOR_SIZE:	db 0x10
 currentSector db 1
 byteVar: db "  "
 ;this is probably a bad practice- by leaving string as last variable

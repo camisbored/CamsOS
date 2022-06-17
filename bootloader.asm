@@ -57,8 +57,17 @@ main:
     mov bx, 0x0100
     mov es, bx 
     xor bx, bx  
-    mov cx, 0x0004  ;cl contains location of kernel sector
+    mov cx, 0x0008  ;cl contains location of kernel sector
     mov ax, 0x0209  ;al contains how many sectors to load for kernel
+    xor dh, dh
+    int 13h 
+
+    ;; load George Pic ;;
+    mov bx, 0x0500
+    mov es, bx 
+    xor bx, bx  
+    mov cx, 0x0004  ;cl contains location of george pic
+    mov ax, 0x0204  ;al contains how many sectors to load for kernel
     xor dh, dh
     int 13h 
 
@@ -66,7 +75,7 @@ main:
     mov bx, 0x0300
     mov es, bx 
     xor bx, bx  
-    mov cx, 0x0002  ;cl contains location of kernel sector
+    mov cx, 0x0002  ;cl contains location of Mouse GUI 
     mov ax, 0x0202  ;al contains how many sectors to load for kernel
     xor dh, dh
     int 13h 
