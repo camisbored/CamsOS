@@ -22,6 +22,8 @@ functionality. This OS contains the following features:
 
 -Print register values.
 
+-Image rendering- will display an image of my cat on the screen.
+
 -A mouse demo feature that will turn the mouse on and change screen based on clicks (currently no way to return from this)
 
 -A start of a calculator
