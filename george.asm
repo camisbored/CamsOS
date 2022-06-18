@@ -1,6 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;kernel.asm                                                       ;
-;Contains our main logic and interacts with Drive/IO utilities    ;
+;george.asm                                                       ;
+;Contains sub-routime for rendering images to screen.             ;
+;demonstrates using an image of a cat.                            ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 bits 16
 mov byte [driveNum], dl
