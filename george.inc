@@ -1,3 +1,5 @@
+;dimensions and raw data for George image rendering.
+;Images can be converted to data using the following tool:
 ;https://www.digole.com/tools/PicturetoC_Hex_converter.php
 
 PIC_WIDTH: dw 53
