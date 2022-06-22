@@ -9,7 +9,8 @@ pongGame:
 ;;;main loop, poll state and draw
 gameLoop:
     call updateClock
-    cmp byte [clockWatch], 0x50
+    mov byte al, [gameSpeed]
+    cmp byte [clockWatch], al
     je updateBall
 retFromUpdateBall:
     call checkCollision
@@ -25,6 +26,20 @@ retFromUpdateBall:
     je decDXPong
     cmp ah, 0x50
     je incDXPong
+    cmp al, '1'
+    je slowGame
+    cmp al, '2'
+    je speedGame 
+    jmp gameLoop
+slowGame:
+    mov byte al, [gameSpeed]
+    inc al
+    mov byte [gameSpeed], al
+    jmp gameLoop
+speedGame:
+    mov byte al, [gameSpeed]
+    dec al
+    mov byte [gameSpeed], al
     jmp gameLoop
 decDXPong:
     mov byte ah, [playerCenter]
@@ -337,5 +352,6 @@ lastBallX: dw 100
 lastBallY: dw 100
 directionFlag: db 0
 oppFlag: db 0
+gameSpeed: db 0x50
 clockWatch db 0
 

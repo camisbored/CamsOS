@@ -13,6 +13,8 @@ call printString
 
 ;;continually print info message and take input- call function based on input
 mainLoop:
+    mov word [axAtStart], ax
+
     mov si, mainMessage
     call printString
 
@@ -327,9 +329,9 @@ helpStr: db "----------------------",0x0a,0x0d,\
             "---------------------",0x0a,0x0d,\
             "|w- writes/encrypts/timestamps message or stores executable code|",0x0a,0x0d,\
             "---------------------",0x0a,0x0d,\
-            "|a- displays a picture of George the Cat! (ESC to return)|",0x0a,0x0d,\
+            "|a- displays a picture of George the Cat! (ESC to return, color c)|",0x0a,0x0d,\
             "---------------------",0x0a,0x0d,\
-            "|p- play pong with arrow keys, leave with ESC|",0x0a,0x0d,\
+            "|p- play pong with arrow keys, leave with ESC, 1 to slow, 2 to speed|",0x0a,0x0d,\
             "---------------------",0x0a,0x0d,\
             "|g- draw using arrows, change color with c, black with b, leave with ESC|",0x0a,0x0d,\
             "---------------------",0x0a,0x0d,\
@@ -358,6 +360,7 @@ syntaxErrorStr: db "!!!SYNTAX ERROR!!! single digit and +/- only",0
 executeStr: db 0x0a, 0x0d, "Running code...",0
 invalidSectorStr: db 0x0a, 0x0d, "!!!ERROR, INVALID SECTOR!!!",0
 
+axAtStart: dw 0x0000
 encryptionFactor db 64
 driveNum: db 0
 requestedSector db 0x10

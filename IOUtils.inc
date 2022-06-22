@@ -13,11 +13,11 @@ printChar:
 ;;; scans single key and prints to screen;;;
 ;;; takes no input, returns key value in al ;;;
 getKeyAndPrint:
-    	mov ah, 0x00
-    	int 0x16
-    	mov ah, 0x0e
-    	int 0x10
-    	call newLineReturn
+	mov ah, 0x00
+	int 0x16
+	mov ah, 0x0e
+	int 0x10
+	call newLineReturn
 	ret
 
 ;;; getInput ;;;
@@ -288,6 +288,7 @@ syntaxError:
 ;;;printReg;;;
 ;;; prints register values;
 printRegisters:
+    mov word ax, [axAtStart]
 	mov byte [string], 'A'
     mov byte [string+1], 'X'
 	mov byte [string+2], ':'
@@ -333,12 +334,12 @@ printRegisters:
 	ret
 
 printAX:
-	mov dx, ax
+	push ax
 	xchg al, ah
 	call hexToAscii
 	mov byte [string+6], ah
 	mov byte [string+7], al
-	mov ax, dx
+	pop ax
 	call hexToAscii
 	mov byte [string+8], ah
 	mov byte [string+9], al
