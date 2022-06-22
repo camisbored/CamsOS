@@ -1,4 +1,4 @@
-SimpleOS-
+CamsOS-
 A BIOS 16-bit interrupt based x86 operating system with read/write and graphics 
 functionality. This OS contains the following features:
 
