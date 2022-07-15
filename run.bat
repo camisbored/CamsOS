@@ -1,1 +1,1 @@
-qemu-system-i386 fullOS.bin
+qemu-system-i386 -soundhw pcspk fullOS.bin
