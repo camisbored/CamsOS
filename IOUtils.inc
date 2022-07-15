@@ -347,3 +347,34 @@ printAX:
 	mov si, string
 	call printString
 	ret
+
+;;play sound- beeps based on parameters passed in;;
+;; inputs- ax = pitch, cx = length               ;;
+playSound:
+	push ax
+	mov al, 182
+	out 43h, al
+	pop ax
+	out 42h, al
+	mov al, ah
+	out 42h, al
+	in al, 61h
+	or al, 00000011b
+	out 61h, al
+	mov bx, 4
+	call quickWait
+	in al, 0x61
+	and al, 0xFC
+	out 0x61, al
+	mov dx, 0x1000
+	call quickWait
+	ret
+
+quickWait:
+	mov cx, 0x0000
+timer:
+	int 10h
+	inc cx
+	cmp cx, dx
+	jne timer
+	ret

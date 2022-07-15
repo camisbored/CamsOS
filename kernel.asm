@@ -62,6 +62,9 @@ mainLoop:
     cmp al, 'a'
     je image
 
+    cmp al, 'b'
+    je beep
+
     mov si, notFound
     call printString
     jmp mainLoop
@@ -279,6 +282,42 @@ calc:
     call performCalculation
     jmp mainLoop
 
+beep:
+	mov ax, 2280
+	mov dx, 0x2500
+	call playSound
+
+	mov ax, 2280
+	mov dx, 0x500
+	call playSound
+
+	mov ax, 2280
+	mov dx, 0x500
+	call playSound
+
+	mov ax, 2280
+	mov dx, 0x5000
+	call playSound
+
+	mov ax, 3360
+	mov dx, 0x2500
+	call playSound
+
+	mov ax, 2280
+	mov dx, 0x500
+	call playSound
+
+	mov ax, 3360
+	mov dx, 0x2500
+	call playSound
+
+	mov ax, 2280
+	mov dx, 0x500
+	call playSound
+
+	jmp mainLoop
+
+
 printReg:
     call printRegisters
     jmp mainLoop
@@ -319,9 +358,7 @@ mainMessage: db "Choose from the following:",0x0a,0x0d,\
                 "[s]can, [r]ead, [w]rite, [d]elete, [h]elp, [t]ime, e[x]ecute, [e]dit, [g]fx",0
 
 helpStr: db "----------------------",0x0a,0x0d,\
-            "|     Help Menu      |",0x0a,0x0d,\
-            "---------------------",0x0a,0x0d,\
-            "|e- edit file at given sector|",0x0a,0x0d,\
+            "|b- plays song (audio test)|",0x0a,0x0d,\
             "---------------------",0x0a,0x0d,\
             "|s- scan drive for sectors with data (IE- display list of files)|",0x0a,0x0d,\
             "---------------------",0x0a,0x0d,\
