@@ -15,42 +15,55 @@ functionality. This OS contains the following features:
   ![image](https://user-images.githubusercontent.com/81730723/182150103-27c8f979-6b9a-406e-aefc-77abbcc063bf.png)
 
   4. Delete "file"
+  
   ![image](https://user-images.githubusercontent.com/81730723/182151093-e9045fed-740e-4cc3-9c37-4161e18b28e4.png)
 
   5. Edit "file" 
+  
   ![image](https://user-images.githubusercontent.com/81730723/182150282-ed48b8df-936d-4cbe-be93-23f55524326e.png)
 
   6. Print help menu for navigation help
+  
   ![image](https://user-images.githubusercontent.com/81730723/182150385-a7719147-d0b7-40e2-a994-3782b7176163.png)
 
   7. Write and store raw machine code to sector to be executed.
+  
   ![image](https://user-images.githubusercontent.com/81730723/182150645-34ae68f8-6de9-49bb-af96-bb5c27872afb.png)
 
   8. Dynamically execute stored code
+  
   ![image](https://user-images.githubusercontent.com/81730723/182150764-2f66e0db-ad9c-434f-bb52-21bbff30f976.png)
 
   9. Switch to graphics mode and allow user to draw on screen using keys and colors
+  
   ![image](https://user-images.githubusercontent.com/81730723/182151531-2342ce9b-8295-4adc-bda5-29dcbe3bcf98.png)
 
   10. Print register values.
+  
   ![image](https://user-images.githubusercontent.com/81730723/182151678-400c3b09-7b3c-4d47-9b7b-91b32fd6dbe0.png)
 
   11. Image rendering- will display an image of my cat on the screen.
+  
   ![image](https://user-images.githubusercontent.com/81730723/182151905-04679220-c143-4ed6-a26c-afb820bca83c.png)
 
   12. A mouse demo feature that will turn the mouse on and change screen based on clicks (currently no way to return from this)
+  
   ![image](https://user-images.githubusercontent.com/81730723/182152859-4fc4d724-29bb-4f56-9756-c1949a3c7996.png)
 
   13. A start of a calculator
+  
   ![image](https://user-images.githubusercontent.com/81730723/182152509-99a30f2d-a960-4ef0-beff-87949b0eb485.png)
 
   14. A print date/time feature
+  
   ![image](https://user-images.githubusercontent.com/81730723/182152153-5b7783b5-8d3e-433d-af81-dc807cda503b.png)
 
   15. A start and mostly functioning pong game
+  
   ![image](https://user-images.githubusercontent.com/81730723/182152318-aff780b0-50a2-488e-8c21-d8a5dbba7638.png)
 
   16. Will play audio sequence through speaker.
+  
   ![image](https://user-images.githubusercontent.com/81730723/182152076-cdc6f718-ecfb-4e98-9bb8-0474f86ab18b.png)
 
 There is a build script in here. You will need NASM to assemble. If you plan on editing this, 
