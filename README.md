@@ -3,12 +3,15 @@ A BIOS 16-bit interrupt based x86 operating system with read/write and graphics
 functionality. This OS contains the following features:
 
   1. Scan Disk for "files" (sectors with data).
-![image](https://user-images.githubusercontent.com/81730723/182150936-7c29dfa5-f9bf-47c5-9bec-1f97df3bc233.png)
+
+  ![image](https://user-images.githubusercontent.com/81730723/182150936-7c29dfa5-f9bf-47c5-9bec-1f97df3bc233.png)
 
   2. Write and encrypt "file" (data to single sector) and date/time stamps end of sector
-![image](https://user-images.githubusercontent.com/81730723/182149985-ff005a30-dd8d-47f4-8279-bbb663a3b035.png)
+  
+  ![image](https://user-images.githubusercontent.com/81730723/182149985-ff005a30-dd8d-47f4-8279-bbb663a3b035.png)
 
   3. Read and decrypt "file" (data from selected sector)
+  
   ![image](https://user-images.githubusercontent.com/81730723/182150103-27c8f979-6b9a-406e-aefc-77abbcc063bf.png)
 
   4. Delete "file"
