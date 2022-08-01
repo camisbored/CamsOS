@@ -2,37 +2,53 @@ CamsOS-
 A BIOS 16-bit interrupt based x86 operating system with read/write and graphics 
 functionality. This OS contains the following features:
 
--Scan Disk for "files" (sectors with data).
+  1. Scan Disk for "files" (sectors with data).
+  ![image](https://user-images.githubusercontent.com/81730723/182150936-7c29dfa5-f9bf-47c5-9bec-1f97df3bc233.png)
 
--Write and encrypt "file" (data to single sector) and date/time stamps end of sector
+  2. Write and encrypt "file" (data to single sector) and date/time stamps end of sector
+  ![image](https://user-images.githubusercontent.com/81730723/182149985-ff005a30-dd8d-47f4-8279-bbb663a3b035.png)
 
--Read and decrypt "file" (data from selected sector)
+  3. Read and decrypt "file" (data from selected sector)
+  ![image](https://user-images.githubusercontent.com/81730723/182150103-27c8f979-6b9a-406e-aefc-77abbcc063bf.png)
 
--Delete "file"
+  4. Delete "file"
+  ![image](https://user-images.githubusercontent.com/81730723/182151093-e9045fed-740e-4cc3-9c37-4161e18b28e4.png)
 
--Edit "file" 
+  5. Edit "file" 
+  ![image](https://user-images.githubusercontent.com/81730723/182150282-ed48b8df-936d-4cbe-be93-23f55524326e.png)
 
--Print help menu for navigation help
+  6. Print help menu for navigation help
+  ![image](https://user-images.githubusercontent.com/81730723/182150385-a7719147-d0b7-40e2-a994-3782b7176163.png)
 
--Write and store raw machine code to sector to be executed.
+  7. Write and store raw machine code to sector to be executed.
+  ![image](https://user-images.githubusercontent.com/81730723/182150645-34ae68f8-6de9-49bb-af96-bb5c27872afb.png)
 
--Dynamically execute stored code
+  8. Dynamically execute stored code
+  ![image](https://user-images.githubusercontent.com/81730723/182150764-2f66e0db-ad9c-434f-bb52-21bbff30f976.png)
 
--Switch to graphics mode and allow user to draw on screen using keys and colors
+  9. Switch to graphics mode and allow user to draw on screen using keys and colors
+  ![image](https://user-images.githubusercontent.com/81730723/182151531-2342ce9b-8295-4adc-bda5-29dcbe3bcf98.png)
 
--Print register values.
+  10. Print register values.
+  ![image](https://user-images.githubusercontent.com/81730723/182151678-400c3b09-7b3c-4d47-9b7b-91b32fd6dbe0.png)
 
--Image rendering- will display an image of my cat on the screen.
+  11. Image rendering- will display an image of my cat on the screen.
+  ![image](https://user-images.githubusercontent.com/81730723/182151905-04679220-c143-4ed6-a26c-afb820bca83c.png)
 
--A mouse demo feature that will turn the mouse on and change screen based on clicks (currently no way to return from this)
+  12. A mouse demo feature that will turn the mouse on and change screen based on clicks (currently no way to return from this)
+  ![image](https://user-images.githubusercontent.com/81730723/182152859-4fc4d724-29bb-4f56-9756-c1949a3c7996.png)
 
--A start of a calculator
+  13. A start of a calculator
+  ![image](https://user-images.githubusercontent.com/81730723/182152509-99a30f2d-a960-4ef0-beff-87949b0eb485.png)
 
--A print date/time feature
+  14. A print date/time feature
+  ![image](https://user-images.githubusercontent.com/81730723/182152153-5b7783b5-8d3e-433d-af81-dc807cda503b.png)
 
--A start and mostly functioning pong game
+  15. A start and mostly functioning pong game
+  ![image](https://user-images.githubusercontent.com/81730723/182152318-aff780b0-50a2-488e-8c21-d8a5dbba7638.png)
 
--Will play audio sequence through speaker.
+  16. Will play audio sequence through speaker.
+  ![image](https://user-images.githubusercontent.com/81730723/182152076-cdc6f718-ecfb-4e98-9bb8-0474f86ab18b.png)
 
 There is a build script in here. You will need NASM to assemble. If you plan on editing this, 
 I recommend Visual Studio Code, as you should be able to open this folder up there and be good 
